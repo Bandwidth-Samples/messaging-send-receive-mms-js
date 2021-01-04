@@ -16,7 +16,7 @@
 <!-- /TOC -->
 
 # Description
-Using a tool capabable of posting (Postman) post a json body to the apps callback `/messages` with a json body like:
+Using a tool capabable of posting (Postman) post a json body to the apps endpoint `/messages` with a json body like:
 ```json
 {
   "to": "+19994444",
