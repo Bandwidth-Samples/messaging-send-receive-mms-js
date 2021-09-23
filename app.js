@@ -6,8 +6,6 @@ import fs from 'fs-extra';
 const app = express();
 app.use(express.json());
 
-
-
 const accountId = process.env.BW_ACCOUNT_ID;
 const applicationId = process.env.BW_MESSAGING_APPLICATION_ID;
 const bwPhoneNumber = process.env.BW_NUMBER;
@@ -46,7 +44,7 @@ const client = new Client({
 // The controller is the main API to the SDK
 const controller = new ApiController(client);
 
-app.post('/messages', async (req, res) => {
+app.post('/callbacks/outbound/messaging', async (req, res) => {
 
     const to = req.body.to;
     const text = req.body.text;
@@ -71,19 +69,13 @@ app.post('/messages', async (req, res) => {
     res.status(200).json({
         success: true
     });
-})
+});
 
-app.post('/callbacks/outbound/message', async (req, res) => {
+app.post('/callbacks/outbound/messaging/status', async (req, res) => {
     const callback = req.body[0];
     res.sendStatus(200);
 
     switch (callback.type) {
-        case 'message-received':
-            console.log(`from: ${callback.message.from}, to ${callback.message.to}`);
-            console.log(`${callback.message.text}`);
-            console.log(`with media: `);
-            saveMedia(callback.message.media);
-            break;
         case 'message-sending':
             console.log(`message-sending type is only for MMS`);
             break;
@@ -94,9 +86,31 @@ app.post('/callbacks/outbound/message', async (req, res) => {
             console.log(`For MMS and Group Messages, you will only receive this callback if you have enabled delivery receipts on MMS. `);
             break;
         default:
+            console.log(`Message type does not match endpoint. This endpoint is used for message status callbacks only.`);
             break;
     }
-})
+});
+
+app.post('/callbacks/inbound/messaging', async (req, res) => {
+    const callback = req.body[0];
+    res.sendStatus(200);
+
+    switch (callback.type) {
+        case 'message-received':
+            console.log(`from: ${callback.message.from}, to ${callback.message.to}`);
+            console.log(`${callback.message.text}`);
+            if (callback.message.media != null) {
+                console.log(`with media: `);
+                saveMedia(callback.message.media);
+            } else {
+                console.log(`with no media.`);
+            }
+            break;
+        default:
+            console.log(`Message type does not match endpoint. This endpoint is used for inbound messages only.\nOutbound message callbacks should be sent to /callbacks/outbound/messaging.`);
+            break;
+    }
+});
 
 async function saveMedia(medias) {
 
