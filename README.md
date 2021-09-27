@@ -21,7 +21,6 @@ Using a tool capable of making POST requests (Postman), send a POST request to t
 {
   "to": "+19199994444",
   "text":"Hello World!"
-  
 }
 ```
 The application will text the number `+19199994444` a picture of a cat and the words `Hello World!`.
