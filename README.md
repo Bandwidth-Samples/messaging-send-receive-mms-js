@@ -21,12 +21,13 @@ Using a tool capable of making POST requests (Postman), send a POST request to t
 {
   "to": "+19199994444",
   "text":"Hello World!"
+  
 }
 ```
 The application will text the number `+19199994444` a picture of a cat and the words `Hello World!`.
 If you text your Bandwidth number any media file after setting up the application's callback in the bandwidth dashboard; it will save it to the project folder.
 
-The other two endpoints are used for handling inbound and outbound webhooks from Bandwidth. In order to use the correct endpoints, you must check the "Use multiple callback URLs" box on the application page in Dashboard. Then in Dashboard, set the INBOUND CALLBACK to /callbacks/inbound/messaging and the STATUS CALLBACK to /callbacks/outbound/messaging/status. The same can be accomplished via the Dashboard API by setting InboundCallbackUrl and OutboundCallbackUrl respectively.
+The other two endpoints are used for handling inbound and outbound webhooks from Bandwidth. In order to use the correct endpoints, you must check the "Use multiple callback URLs" box on the application page in Dashboard. Then in Dashboard, set the INBOUND CALLBACK to `/callbacks/inbound/messaging` and the STATUS CALLBACK to `/callbacks/outbound/messaging/status`. The same can be accomplished via the Dashboard API by setting InboundCallbackUrl and OutboundCallbackUrl respectively.
 
 Inbound callbacks are sent notifying you of a received message on a Bandwidth number, this app prints the number of media received, if any. Outbound callbacks are status updates for messages sent from a Bandwidth number, this app has a dedicated response for each type of status update.
 
